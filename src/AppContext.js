@@ -9,6 +9,7 @@ import HomePage from "./components/Homepage";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import useToken from "./components/useToken";
+import TasksPage from "./components/Tasks";
 
 function AppContext() {
   const { token, removeToken, setToken } = useToken();
@@ -16,7 +17,13 @@ function AppContext() {
   const { pathname } = location;
 
   return (
-    <div className="App">
+    <div
+      className={
+        pathname !== "/" && pathname !== "/login" && pathname !== "/register"
+          ? "wrapper"
+          : "App"
+      }
+    >
       {pathname !== "/" &&
         pathname !== "/login" &&
         pathname !== "/register" && <Sidebar token={removeToken} />}
@@ -40,6 +47,11 @@ function AppContext() {
               exact
               path="/register"
               element={<Register token={token} setToken={setToken} />}
+            ></Route>
+            <Route
+              exact
+              path="/tasks"
+              element={<TasksPage token={token} setToken={setToken} />}
             ></Route>
           </Routes>
         </>
