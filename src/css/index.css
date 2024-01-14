@@ -77,7 +77,6 @@ ul {
   background: none;
   outline: none;
   border: none;
-  color: #fff;
   font-size: 16px;
 }
 
@@ -141,8 +140,8 @@ ul {
 
 .sidebar .closebtn {
   position: absolute;
-  top: -15px;
-  right: 5px;
+  top: -5px;
+  right: 10px;
   font-size: 36px;
   margin-left: 50px;
   text-decoration: none;
@@ -405,7 +404,15 @@ ul {
   font-size: 15px;
   letter-spacing: 0.2px;
 }
+.currentTaskItem span,
+.overdueTaskItem span {
+  margin-left: 5px;
+  margin-right: 5px;
 
+}
+.taskDatee {
+  margin-left: 5px;
+}
 .taskList .taskDatee {
   text-transform: uppercase;
 }
