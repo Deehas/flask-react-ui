@@ -3,8 +3,13 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenNib } from "@fortawesome/free-solid-svg-icons";
-import { useLocation } from "react-router-dom";
+import {
+  faTasks,
+  faHome,
+  faSignOut,
+  faEnvelope,
+} from "@fortawesome/free-solid-svg-icons";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // Internal imports
 import ToastConfig from "./utils/utils";
@@ -18,6 +23,7 @@ import task from "../image/icons8-task-80.png";
 import signout from "../image/icons8-logout-24.png";
 
 function Sidebar(props) {
+  const navigate = useNavigate();
   const location = useLocation();
   const { pathname } = location;
   const [userName, setUserName] = useState("");
@@ -28,18 +34,64 @@ function Sidebar(props) {
     setUserName(username);
   }, []);
 
+  useEffect(() => {
+    const openNav = () => {
+      document.getElementById("mySidebar").style.width = "200px";
+    };
+
+    const closeNav = () => {
+      document.getElementById("mySidebar").style.width = "0";
+    };
+
+    const handleButtonClick = () => {
+      const sidebar = document.getElementById("mySidebar");
+      if (sidebar.style.width === "0px" || sidebar.style.width === "") {
+        openNav();
+      } else {
+        closeNav();
+      }
+    };
+
+    const x = window.matchMedia("(max-width: 880px)");
+
+    const sideBarFunction = (mediaQuery) => {
+      const sidebar = document.getElementById("mySidebar");
+      const openButton = document.getElementById("openbutton");
+      const closeButton = document.getElementById("closebutton");
+
+      if (mediaQuery.matches) {
+        sidebar.style.width = "0";
+      } else {
+        sidebar.style.width = "200px";
+      }
+
+      if (openButton) {
+        document.getElementById("openbutton").onclick = openNav;
+      }
+      if (closeButton) {
+        document.getElementById("closebutton").onclick = closeNav;
+      }
+    };
+
+    sideBarFunction(x);
+    x.addEventListener("change", () => sideBarFunction(x));
+
+    return () => {
+      x.removeEventListener("change", () => sideBarFunction(x));
+    };
+  }, []);
+
   function logMeOut() {
     axios({
       method: "GET",
       url: "/auth/logout",
     })
       .then((response) => {
-        console.log(response);
-
         const data = response;
-        console.log(data);
         toast.success(data.data.msg, ToastConfig);
         props.token();
+
+        navigate("/");
       })
       .catch((error) => {
         if (error.response) {
@@ -49,47 +101,42 @@ function Sidebar(props) {
   }
 
   return (
-    <div className="wrapper">
-      <div id="mySidebar" className="sidebar">
-        <a href="javascript:void(0)" id="closebutton" className="closebtn">
-          &times;
-        </a>
-        <div className="top-sidebar">&nbsp;{userName}'s Space</div>
+    <div id="mySidebar" className="sidebar">
+      <a href="" id="closebutton" className="closebtn">
+        &times;
+      </a>
+      <div className="top-sidebar">&nbsp;{userName}'s Space</div>
 
-        <ul>
-          <li>
-            <a className={pathname === "/home" && "active"} href="/home">
-              <img className="" src={home} />
-              Home
-            </a>
-          </li>
-          <li>
-            <a
-              className={pathname === "/task" && "active"}
-              href="/tasks"
-            >
-              <img className="" src={task} />
-              Task Management
-            </a>
-          </li>
-          <li>
-            <button onClick={logMeOut}>
-              <img className="" src={signout} />
-              Logout
-            </button>
-          </li>
-        </ul>
-        <div className="social_media">
-          <a href="https://www.linkedin.com/in/abdulsalam-saheed/">
-            <img className="" src={linkedin} />
+      <ul>
+        <li>
+          <a className={pathname === "/home" ? "active" : ""} href="/home">
+            <FontAwesomeIcon icon={faHome} />
+            Home
           </a>
-          <a href="#">
-            <img className="" src={twitter} />
+        </li>
+        <li>
+          <a className={pathname === "/task" ? "active" : ""} href="/tasks">
+            <FontAwesomeIcon icon={faTasks} />
+            Task Management
           </a>
-          <a href="#">
-            <img className="" src={instagram} />
-          </a>
-        </div>
+        </li>
+        <li>
+          <button onClick={logMeOut}>
+            <FontAwesomeIcon icon={faSignOut} />
+            Logout
+          </button>
+        </li>
+      </ul>
+      <div className="social_media">
+        <a href="https://www.linkedin.com/in/abdulsalam-saheed/">
+          <FontAwesomeIcon icon={faEnvelope} />
+        </a>
+        <a href="#">
+          <FontAwesomeIcon icon={faEnvelope} />
+        </a>
+        <a href="#">
+          <FontAwesomeIcon icon={faEnvelope} />
+        </a>
       </div>
     </div>
   );
