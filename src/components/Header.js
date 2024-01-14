@@ -15,10 +15,7 @@ function Header(props) {
       url: "/auth/logout",
     })
       .then((response) => {
-        console.log(response);
-
         const data = response;
-        console.log(data);
         toast.success(data.data.msg, ToastConfig);
         props.token();
       })
