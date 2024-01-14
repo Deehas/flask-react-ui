@@ -1,7 +1,10 @@
 // Library imports
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHandPointRight } from "@fortawesome/free-solid-svg-icons";
 
 // Internal imports
 import ToastConfig from "./utils/utils";
@@ -10,6 +13,7 @@ import ToastConfig from "./utils/utils";
 import logoImage from "../image/Logo.svg";
 
 function Login(props) {
+  const navigate = useNavigate();
   const [loginForm, setloginForm] = useState({
     email: "",
     password: "",
@@ -28,10 +32,13 @@ function Login(props) {
       .then((response) => {
         const data = response;
         const username = data.data.user.username;
-        console.log(data);
+        const userId = data.data.user.id;
         toast.success(data.data.msg, ToastConfig);
         props.setToken(data.data.access_token);
         localStorage.setItem("userName", username);
+        localStorage.setItem("userID", userId);
+
+        navigate("/home");
       })
       .catch((error) => {
         if (error.response) {
@@ -48,6 +55,7 @@ function Login(props) {
 
   function handleChange(event) {
     const { value, name } = event.target;
+
     setloginForm((prevNote) => ({
       ...prevNote,
       [name]: value,
@@ -109,7 +117,8 @@ function Login(props) {
         <div className="logged_in">
           <span>Don&lsquo;t have an account yet? </span>
           <a href="/register">
-            <i className="fa fa-hand-o-right" aria-hidden="true"></i>Register
+            <FontAwesomeIcon icon={faHandPointRight} />
+            Register
           </a>
         </div>
       </div>

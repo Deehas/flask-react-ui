@@ -1,7 +1,10 @@
 // Library imports
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHandPointRight } from "@fortawesome/free-solid-svg-icons";
 
 // Internal imports
 import ToastConfig from "./utils/utils";
@@ -10,6 +13,7 @@ import ToastConfig from "./utils/utils";
 import logoImage from "../image/Logo.svg";
 
 function Register(props) {
+  const navigate = useNavigate();
   const [registerForm, setregisterForm] = useState({
     username: "",
     email: "",
@@ -31,6 +35,8 @@ function Register(props) {
         const data = response;
         toast.success(data.data.msg, ToastConfig);
         props.setToken(response.data.access_token);
+
+        navigate("/home");
       })
       .catch((error) => {
         if (error.response) {
@@ -113,7 +119,8 @@ function Register(props) {
         <div className="registered">
           <span>Already registered? </span>
           <a href="/login">
-            <i className="fa fa-hand-o-right" aria-hidden="true"></i>Login
+            <FontAwesomeIcon icon={faHandPointRight} />
+            Login
           </a>
         </div>
       </div>
