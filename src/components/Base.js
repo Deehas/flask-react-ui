@@ -1,5 +1,7 @@
 // Library imports
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock } from "@fortawesome/free-solid-svg-icons";
 
 // Static imports
 import logoImage from "../image/Logo.svg";
@@ -17,7 +19,7 @@ function Base() {
       <div className="call-to-action">
         <h1 className="title">
           Achieve all your daily and weekly objectives in timely fashion{" "}
-          <i className="fa fa-clock-o" aria-hidden="true"></i>
+          <FontAwesomeIcon icon={faClock} />
         </h1>
         <h3 className="subtitle">
           {" "}
